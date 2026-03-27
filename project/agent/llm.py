@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import os
-from getpass import getpass
 import time
+from getpass import getpass
 
 import requests
 
@@ -52,7 +52,7 @@ def call_llm(messages: list[dict[str, str]]) -> str:
 
 def generate_response(user_input: str, tool_result: dict) -> str:
     import json
-    
+
     prompt = f"""你是一个AI助手，请根据以下信息回答用户问题：
 
 用户输入：
@@ -66,6 +66,6 @@ def generate_response(user_input: str, tool_result: dict) -> str:
 - 简洁
 - 中文
 - 不输出JSON"""
-    
+
     messages = [{"role": "user", "content": prompt}]
     return call_llm(messages)
