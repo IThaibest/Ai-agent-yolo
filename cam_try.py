@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 import cv2
+
 from ultralytics import YOLO
 
 _MODEL: YOLO | None = None
@@ -32,9 +33,9 @@ def _extract_detections(results) -> list[dict[str, Any]]:
 
     detections: list[dict[str, Any]] = []
     for (x1, y1, x2, y2), conf, cls_id in zip(xyxy, confs, clss):
-        x1i, y1i, x2i, y2i = (int(round(v)) for v in (x1, y1, x2, y2))
-        x_center = int(round((x1i + x2i) / 2))
-        y_center = int(round((y1i + y2i) / 2))
+        x1i, y1i, x2i, y2i = (round(v) for v in (x1, y1, x2, y2))
+        x_center = round((x1i + x2i) / 2)
+        y_center = round((y1i + y2i) / 2)
 
         if isinstance(names_map, dict):
             name = names_map.get(int(cls_id), str(int(cls_id)))
@@ -65,7 +66,7 @@ def draw_results(frame, results):
 
         cv2.rectangle(annotated, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-        label = f'{det["name"]} {det["confidence"]:.2f}'
+        label = f"{det['name']} {det['confidence']:.2f}"
         cv2.putText(
             annotated,
             label,
@@ -114,7 +115,7 @@ def main() -> None:
                 x1, y1, x2, y2 = det["bbox"]
                 cx, cy = det["center"]
                 print(
-                    f'检测到: {det["name"]} | 置信度: {det["confidence"]:.2f} | '
+                    f"检测到: {det['name']} | 置信度: {det['confidence']:.2f} | "
                     f"边界框: ({x1}, {y1}, {x2}, {y2}) | 中心: ({cx}, {cy})"
                 )
 
@@ -138,4 +139,6 @@ if __name__ == "__main__":
 
 def get_detected_objects(results):
     detections = _extract_detections(results)
-    return [{"name": d["name"], "confidence": d["confidence"], "x": d["center"][0], "y": d["center"][1]} for d in detections]
+    return [
+        {"name": d["name"], "confidence": d["confidence"], "x": d["center"][0], "y": d["center"][1]} for d in detections
+    ]
