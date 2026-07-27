@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from pathlib import Path
+
 import cv2
+
 from ultralytics import YOLO
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -42,13 +44,15 @@ def detect_object(target_name: str) -> dict:
         best = None
         thr = 0.6
         for (x1, y1, x2, y2), conf, cls_id in zip(xyxy, confs, clss):
-            name = str(names_map.get(int(cls_id), cls_id)) if isinstance(names_map, dict) else str(names_map[int(cls_id)])
+            name = (
+                str(names_map.get(int(cls_id), cls_id)) if isinstance(names_map, dict) else str(names_map[int(cls_id)])
+            )
             if name.lower() != target:
                 continue
             if float(conf) < thr:
                 continue
-            x = int(round((float(x1) + float(x2)) / 2))
-            y = int(round((float(y1) + float(y2)) / 2))
+            x = round((float(x1) + float(x2)) / 2)
+            y = round((float(y1) + float(y2)) / 2)
             cand = {"found": True, "name": name, "confidence": round(float(conf), 4), "x": x, "y": y}
             if best is None or cand["confidence"] > best["confidence"]:
                 best = cand
