@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import cv2
+
 from ultralytics import YOLO
 
 # 模型初始化放在函数外部，避免重复加载
@@ -8,7 +9,7 @@ MODEL = YOLO("yolov8n.pt")
 
 
 def detect_object(target_name: str) -> dict:
-    """检测摄像头中的指定物体（只检测一帧）并返回结构化结果。"""
+    """检测摄像头中的指定物体（只检测一帧）并返回结构化结果。."""
     cap = None
     try:
         target = (target_name or "").strip().lower()
@@ -47,8 +48,8 @@ def detect_object(target_name: str) -> dict:
             if name.lower() != target:
                 continue
 
-            x_center = int(round((float(x1) + float(x2)) / 2))
-            y_center = int(round((float(y1) + float(y2)) / 2))
+            x_center = round((float(x1) + float(x2)) / 2)
+            y_center = round((float(y1) + float(y2)) / 2)
 
             cand = {
                 "found": True,
