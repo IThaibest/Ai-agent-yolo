@@ -89,7 +89,7 @@ def main() -> None:
         return
 
     result = detect_object(target)
-    
+
     try:
         final_response = generate_response(user_input, result)
         print(final_response, flush=True)

@@ -24,7 +24,7 @@ def build_prompt(user_input: str) -> list[dict[str, str]]:
         {"role": "assistant", "content": '{"tool": "chat", "response": "你好"}'},
     ]
 
-    return [{"role": "system", "content": system}] + examples + [{"role": "user", "content": user_input}]
+    return [{"role": "system", "content": system}, *examples, {"role": "user", "content": user_input}]
 
 
 def build_messages(user_input: str) -> list[dict[str, str]]:
